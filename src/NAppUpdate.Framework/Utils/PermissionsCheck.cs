@@ -11,7 +11,9 @@ namespace NAppUpdate.Framework.Utils
 
         public static bool HaveWritePermissionsForFolder(string path)
         {
-            var rules = Directory.GetAccessControl(Path.GetDirectoryName(Path.GetDirectoryName(path))).GetAccessRules(true, true, typeof(SecurityIdentifier));
+            while (!Directory.Exists(path))
+                path = Path.GetDirectoryName(path);
+            var rules = Directory.GetAccessControl(path).GetAccessRules(true, true, typeof(SecurityIdentifier));
 
             bool allowwrite = false;
             bool denywrite = false;
